@@ -4,6 +4,10 @@
   "description": "Library to build lucene queries in a typescript friendly way",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kvbalib/lucene-query-builder.git"
+  },
   "files": [
     "lib"
   ],
