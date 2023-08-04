@@ -39,3 +39,7 @@ lib/
 # IDE
 .vscode
 .idea
+
+# lock files
+yarn.lock
+package-lock.json
