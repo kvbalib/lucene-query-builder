@@ -1,6 +1,6 @@
 {
   "name": "lucene-query-builder",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Library to build lucene queries in a typescript friendly way",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -14,7 +14,6 @@
   "scripts": {
     "compile": "npx tsc -p tsconfig.json && npx tsc -p tsconfig-cjs.json",
     "format": "prettier --write \"src/**/*.ts\"",
-    "publish": "npm run compile && npm publish --access public",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepublishOnly": "npm run compile"
   },
