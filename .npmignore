@@ -1,0 +1,37 @@
+# Source files
+src/
+
+# Test files
+tests/
+__tests__/
+
+# Configuration files
+.babelrc
+.eslintrc.js
+.prettierrc
+tsconfig.json
+
+# Git related
+.git
+.gitignore
+
+# Node related
+node_modules
+npm-debug.log
+
+# OS related
+.DS_Store
+Thumbs.db
+
+# IDE related
+.vscode
+.idea
+*.iml
+
+# Build related
+dist/
+build/
+
+# Others
+yarn-error.log
+*.log

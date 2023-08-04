@@ -1,0 +1,30 @@
+{
+  "name": "lucene-query-builder",
+  "version": "0.1.0",
+  "description": "Library to build lucene queries in a typescript friendly way",
+  "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "compile": "npx tsc -p tsconfig.json && npx tsc -p tsconfig-cjs.json",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "publish": "npm run compile && npm publish --access public",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "npm run compile"
+  },
+  "keywords": [
+    "lucene",
+    "query",
+    "builder",
+    "cloud search",
+    "elastic search"
+  ],
+  "author": "orb2",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.0.1",
+    "typescript": "^5.1.6"
+  }
+}
