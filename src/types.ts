@@ -1,4 +1,7 @@
-import { PhraseOptions } from './functions/processPhrase'
+/**
+ * Bond used to combine terms in the query.
+ */
+export type Bond = 'AND' | 'NOT'
 
 /**
  * Term used in the query. The key is the field name,
@@ -7,6 +10,13 @@ import { PhraseOptions } from './functions/processPhrase'
  */
 export interface QueryTerm {
   [key: string]: string | number | Array<string | number>
+}
+
+export interface PhraseOptions {
+  /** Number of letters in phrase to start fuzzy matching. */
+  fuzzyLetters?: number
+  /** Fuzzy matching level. */
+  fuzzyLevel?: number
 }
 
 /**

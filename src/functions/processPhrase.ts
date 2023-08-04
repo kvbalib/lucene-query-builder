@@ -1,9 +1,4 @@
-export interface PhraseOptions {
-  /** Number of letters in phrase to start fuzzy matching. */
-  fuzzyLetters?: number
-  /** Fuzzy matching level. */
-  fuzzyLevel?: number
-}
+import { PhraseOptions } from '../types';
 
 /**
  * Returns formatted CloudSearch phrase with fuzzy matching. Matches all documents if phrase is empty.

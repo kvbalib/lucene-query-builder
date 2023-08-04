@@ -1,6 +1,4 @@
-import { QueryTerm } from '../types'
-
-type Bond = 'AND' | 'NOT'
+import { Bond, QueryTerm } from '../types';
 
 /**
  * Returns AND joined terms for a Lucene query.
