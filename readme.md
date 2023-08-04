@@ -23,12 +23,13 @@ import { query } from 'lucene-query-builder'
 
 const myQuery = query({
   phrase: 'Hello world',
-  and: [{ fieldName: 'value1' }],
+  and: [{ fieldName: 'value1' }, { anotherField: ['value1', 'value2'] }],
+  not: [{ fieldName: 'value2' }],
   options: {
     fuzzyLetters: 5,
     fuzzyLevel: 1,
     urlEncoded: true
-  }
+  },
 })
 
 console.log(myQuery)
@@ -47,7 +48,8 @@ const queryBuilder = new QueryBuilder({
 
 const myQuery = queryBuilder.query({
   phrase: 'Hello world',
-  and: [{ fieldName: 'value1' }]
+  and: [{ fieldName: 'value1' }, { anotherField: ['value1', 'value2'] }],
+  not: [{ fieldName: 'value2' }],
 })
 
 console.log(myQuery)
@@ -58,14 +60,17 @@ console.log(myQuery)
 | Parameter    | Description                                                                                   | 
 |--------------|-----------------------------------------------------------------------------------------------|
 | `phrase`     | The phrase to search for.                                                                     |
-| `and`        | An array of terms to be included in the query. Each term is an object with the field names as keys and the corresponding values. |
-| `not`        | An array of terms to be excluded from the query. Each term is an object with the field names as keys and the corresponding values. |
+| `and`        | An array of terms to be included in the query. Each term is an object with the field name as key and the corresponding values. |
+| `not`        | An array of terms to be excluded from the query. Each term is an object with the field name as key and the corresponding values. |
 | `options`    | An object containing various options for query building. See below for more details.          |
 
 ### Options
 
-| Option        | Description                                                                   | Default value |
-|---------------|-------------------------------------------------------------------------------|---------------|
-| `fuzzyLetters`| The number of letters in the phrase to start fuzzy matching.                  | `5`           |
-| `fuzzyLevel`  | The level of fuzzy matching.                                                  | `1`           |
-| `urlEncoded`  | A boolean indicating whether the returned query string should be URL-encoded. | `false`       |
+| Option        | Default value | Description                                                                   |
+|---------------|---------------|-------------------------------------------------------------------------------|
+| `fuzzyLetters`| `5`           | The number of letters in the phrase to start fuzzy matching.                  |
+| `fuzzyLevel`  | `1`           | The level of fuzzy matching.                                                  |
+| `urlEncoded`  | `false`       | A boolean indicating whether the returned query string should be URL-encoded. |
+
+## License
+MIT
