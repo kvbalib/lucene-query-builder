@@ -1,21 +1,27 @@
-import { processPhrase } from './functions/processPhrase'
-import { processTerms } from './functions/processTerms'
-import { Filter, Options, QueryParams } from './types'
-import { processFilters } from './functions/processFilters'
+import { processPhrase } from './functions/processPhrase';
+import { processTerms } from './functions/processTerms';
+import { Filter, Options, QueryParams } from './types';
+import { processFilters } from './functions/processFilters';
 
 /**
  * This class is used to build query strings for Lucene.
  */
 export class LuceneBuilder {
-  private readonly options: Options
+  private readonly options: Options;
 
   /**
    * Creates an instance of QueryBuilder.
    *
-   * @param {Options} options - The options to configure the QueryBuilder.
+   * @param {Options} [options={}] - Optional options to configure the QueryBuilder.
    */
-  constructor(options: Options) {
-    this.options = options
+  constructor(options: Options = {}) {
+    const defaultOptions: Options = {
+      fuzzyLetters: 5,
+      fuzzyLevel: 1,
+      urlEncoded: false,
+    };
+
+    this.options = { ...defaultOptions, ...options };
   }
 
   /**
@@ -28,14 +34,14 @@ export class LuceneBuilder {
    * @return {string} The built query string.
    */
   query({ phrase = '', and = [], not = [] }: Omit<QueryParams, 'options'>) {
-    const { fuzzyLetters, fuzzyLevel, urlEncoded } = this.options
+    const { fuzzyLetters, fuzzyLevel, urlEncoded } = this.options;
 
-    const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel })
-    const andQuery = processTerms(and, 'AND')
-    const notQuery = processTerms(not, 'NOT')
+    const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel });
+    const andQuery = processTerms(and, 'AND');
+    const notQuery = processTerms(not, 'NOT');
 
-    const result = [phraseQuery, andQuery, notQuery].filter(Boolean).join(' ')
-    return urlEncoded ? encodeURIComponent(result) : result
+    const result = [phraseQuery, andQuery, notQuery].filter(Boolean).join(' ');
+    return urlEncoded ? encodeURIComponent(result) : result;
   }
 
   /**
@@ -43,8 +49,8 @@ export class LuceneBuilder {
    * @param filters
    */
   fq(filters?: Filter[] | null) {
-    if (!filters || !filters.length) return ''
+    if (!filters || !filters.length) return '';
 
-    return processFilters(filters)
+    return processFilters(filters);
   }
 }
