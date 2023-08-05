@@ -12,6 +12,13 @@ export interface QueryTerm {
   [key: string]: string | number | Array<string | number>
 }
 
+/**
+ * Filter used in the query. The key is the field name.
+ */
+export interface Filter {
+  [key: string]: string | number | Array<string | number> | null
+}
+
 export interface PhraseOptions {
   /** Number of letters in phrase to start fuzzy matching. */
   fuzzyLetters?: number

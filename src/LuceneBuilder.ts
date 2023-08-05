@@ -1,11 +1,12 @@
 import { processPhrase } from './functions/processPhrase'
-import { processTerms } from './functions/processTerms';
-import { Options, QueryParams } from './types';
+import { processTerms } from './functions/processTerms'
+import { Filter, Options, QueryParams } from './types'
+import { processFilters } from './functions/processFilters'
 
 /**
  * This class is used to build query strings for Lucene.
  */
-export class QueryBuilder {
+export class LuceneBuilder {
   private readonly options: Options
 
   /**
@@ -14,7 +15,7 @@ export class QueryBuilder {
    * @param {Options} options - The options to configure the QueryBuilder.
    */
   constructor(options: Options) {
-    this.options = options;
+    this.options = options
   }
 
   /**
@@ -35,5 +36,15 @@ export class QueryBuilder {
 
     const result = [phraseQuery, andQuery, notQuery].filter(Boolean).join(' ')
     return urlEncoded ? encodeURIComponent(result) : result
+  }
+
+  /**
+   * Constructs a filter query (fq) string based on the provided filters.
+   * @param filters
+   */
+  fq(filters?: Filter[] | null) {
+    if (!filters || !filters.length) return ''
+
+    return processFilters(filters)
   }
 }

@@ -1,4 +1,4 @@
-import { PhraseOptions } from '../types';
+import { PhraseOptions } from '../types'
 
 /**
  * Returns formatted CloudSearch phrase with fuzzy matching. Matches all documents if phrase is empty.

@@ -35,3 +35,6 @@ build/
 # Others
 yarn-error.log
 *.log
+
+# Example app
+example/

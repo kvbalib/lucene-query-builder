@@ -1,4 +1,4 @@
-import { Bond, QueryTerm } from '../types';
+import { Bond, QueryTerm } from '../types'
 
 /**
  * Returns AND joined terms for a Lucene query.
@@ -7,17 +7,23 @@ import { Bond, QueryTerm } from '../types';
  * @param bond - Bond to join terms with.
  * @returns {string} - AND joined terms.
  */
-export const processTerms = (terms: QueryTerm[], bond: Bond): string =>
-  terms
-    .map((term: QueryTerm) => {
-      const entries = Object.entries(term)
+export const processTerms = (terms: QueryTerm[], bond: Bond): string => {
+  if (!terms?.length) return ''
 
-      if (entries.length === 0) return ''
+  return (
+    `${bond} ` +
+    terms
+      .map((term: QueryTerm) => {
+        const entries = Object.entries(term)
 
-      const [key, value] = entries[0]
-      const values = Array.isArray(value) ? value : [value]
+        if (entries.length === 0) return ''
 
-      return `(${values.map((val) => `${key}:${val}`).join(' OR ')})`
-    })
-    .filter(Boolean)
-    .join(` ${bond} `)
+        const [key, value] = entries[0]
+        const values = Array.isArray(value) ? value : [value]
+
+        return `(${values.map((val) => `${key}:${val}`).join(' OR ')})`
+      })
+      .filter(Boolean)
+      .join(` ${bond} `)
+  )
+}
