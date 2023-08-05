@@ -1,7 +1,7 @@
-import { processPhrase } from './functions/processPhrase'
-import { processTerms } from './functions/processTerms'
 import { Filter, Options, QueryParams } from './types'
-import { processFilters } from './functions/processFilters'
+import { query } from './query'
+import { fq } from './fq'
+import { defaultValues } from './constants/defaultValues'
 
 /**
  * This class is used to build query strings for Lucene.
@@ -16,8 +16,8 @@ export class LuceneBuilder {
    */
   constructor(options: Options = {}) {
     const defaultOptions: Options = {
-      fuzzyLetters: 5,
-      fuzzyLevel: 1,
+      fuzzyLetters: defaultValues.fuzzyLetters,
+      fuzzyLevel: defaultValues.fuzzyLevel,
       urlEncoded: false,
     }
 
@@ -33,15 +33,8 @@ export class LuceneBuilder {
    * @param {QueryTerm[]} params.not - Array of terms to be excluded from the query. Each term is an object with the field names as keys and the corresponding values. Default is an empty array.
    * @return {string} The built query string.
    */
-  query({ phrase = '', and = [], not = [] }: Omit<QueryParams, 'options'>) {
-    const { fuzzyLetters, fuzzyLevel, urlEncoded } = this.options
-
-    const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel })
-    const andQuery = processTerms(and, 'AND')
-    const notQuery = processTerms(not, 'NOT')
-
-    const result = [phraseQuery, andQuery, notQuery].filter(Boolean).join(' ')
-    return urlEncoded ? encodeURIComponent(result) : result
+  query({ phrase = '', and = [], not = [], dates }: Omit<QueryParams, 'options'>) {
+    return query({ phrase, and, not, dates, options: this.options })
   }
 
   /**
@@ -49,8 +42,6 @@ export class LuceneBuilder {
    * @param filters
    */
   fq(filters?: Filter[] | null) {
-    if (!filters || !filters.length) return ''
-
-    return processFilters(filters)
+    return fq(filters)
   }
 }

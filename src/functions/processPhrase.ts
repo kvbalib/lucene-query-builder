@@ -1,4 +1,5 @@
 import { PhraseOptions } from '../types'
+import { defaultValues } from '../constants/defaultValues'
 
 /**
  * Returns formatted CloudSearch phrase with fuzzy matching. Matches all documents if phrase is empty.
@@ -9,7 +10,10 @@ import { PhraseOptions } from '../types'
  */
 export const processPhrase = (
   phrase?: string,
-  { fuzzyLetters = 5, fuzzyLevel = 1 }: PhraseOptions = {},
+  {
+    fuzzyLetters = defaultValues.fuzzyLetters,
+    fuzzyLevel = defaultValues.fuzzyLevel,
+  }: PhraseOptions = {},
 ): string => {
   if (!phrase) return '*:*'
 

@@ -19,6 +19,16 @@ export interface Filter {
   [key: string]: string | number | Array<string | number> | null | undefined
 }
 
+/**
+ * Date parameters used in the query. The key is the field name. The value can be a Date object,
+ * a UTC (Zulu) ISO-8601 string, a tuple of two Date objects or UTC (Zulu) ISO-8601 strings.
+ * If a tuple [date, date] is passed, a range query will be created, using 'TO' to bond the two dates.
+ * Two properties can be passed - start date field and end date field - to create a range query.
+ */
+export interface DateParams {
+  [key: string]: Date | string | [Date | string | null, Date | string | null] | null
+}
+
 export interface PhraseOptions {
   /** Number of letters in phrase to start fuzzy matching. */
   fuzzyLetters?: number
@@ -40,12 +50,9 @@ export interface Options extends PhraseOptions {
  * @interface
  */
 export interface QueryParams {
-  /** The phrase to search for */
   phrase?: string
-  /** An array of terms to include in the query, combined using AND */
   and?: QueryTerm[]
-  /** An array of terms to exclude from the query, combined using NOT */
   not?: QueryTerm[]
-  /** Additional options for the query */
+  dates?: DateParams
   options?: Partial<Options>
 }
