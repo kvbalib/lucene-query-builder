@@ -19,7 +19,7 @@ const client = new CloudSearchDomainClient({
   endpoint: '<endpoint>',
   credentials: {
     accessKeyId: '<accessKeyId>',
-    secretAccessKey: '<secretAccessKey>'
+    secretAccessKey: '<secretAccessKey>',
   },
 })
 
@@ -49,22 +49,22 @@ app.get('/search', async (req: express.Request, res: express.Response) => {
 
 app.get('/', (req, res) => {
   res.json({
-    message: "Welcome to the Lucene Query Builder API!",
+    message: 'Welcome to the Lucene Query Builder API!',
     usage: {
       search: {
-        description: "Search using Lucene Query.",
-        endpoint: "/search",
-        method: "GET",
+        description: 'Search using Lucene Query.',
+        endpoint: '/search',
+        method: 'GET',
         parameters: {
           q: "The query phrase. E.g., 'apple'",
-          otherParams: "Additional query filters in key-value pairs. E.g., type=fruit"
+          otherParams: 'Additional query filters in key-value pairs. E.g., type=fruit',
         },
-        example: "GET /search?q=apple&type=fruit"
-      }
+        example: 'GET /search?q=apple&type=fruit',
+      },
     },
-    note: "This is a simple API. For full documentation, please refer to the repository README or the official documentation."
-  });
-});
+    note: 'This is a simple API. For full documentation, please refer to the repository README or the official documentation.',
+  })
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
