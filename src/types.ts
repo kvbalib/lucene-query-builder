@@ -49,7 +49,7 @@ export interface Options extends PhraseOptions {
  * Query options.
  * @interface
  */
-export interface QueryParams {
+export interface Query {
   phrase?: string
   and?: QueryTerm[]
   not?: QueryTerm[]

@@ -1,4 +1,4 @@
-import { Filter, Options, QueryParams } from './types'
+import { Filter, Options, Query } from './types'
 import { query } from './query'
 import { fq } from './fq'
 import { defaultValues } from './constants/defaultValues'
@@ -33,7 +33,7 @@ export class LuceneBuilder {
    * @param {QueryTerm[]} params.not - Array of terms to be excluded from the query. Each term is an object with the field names as keys and the corresponding values. Default is an empty array.
    * @return {string} The built query string.
    */
-  query({ phrase = '', and = [], not = [], dates }: Omit<QueryParams, 'options'>) {
+  query({ phrase = '', and = [], not = [], dates }: Omit<Query, 'options'>) {
     return query({ phrase, and, not, dates, options: this.options })
   }
 

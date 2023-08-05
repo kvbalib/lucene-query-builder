@@ -1,6 +1,6 @@
 import { processPhrase } from './functions/processPhrase'
 import { processTerms } from './functions/processTerms'
-import { QueryParams } from './types'
+import { Query } from './types'
 import { processDates } from './functions/processDates'
 
 /**
@@ -12,7 +12,7 @@ export const query = ({
   not = [],
   dates,
   options = {},
-}: Partial<QueryParams> = {}) => {
+}: Partial<Query> = {}) => {
   const { fuzzyLetters, fuzzyLevel, urlEncoded } = options
 
   const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel })
