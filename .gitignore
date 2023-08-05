@@ -43,5 +43,3 @@ lib/
 # lock files
 yarn.lock
 package-lock.json
-
-example/
