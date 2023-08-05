@@ -1,6 +1,6 @@
 {
   "name": "lucene-query-builder",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Library to build lucene queries in a typescript friendly way",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
