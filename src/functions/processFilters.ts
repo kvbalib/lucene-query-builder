@@ -11,7 +11,7 @@ import { Filter } from '../types'
  * // Returns: "(and (or (term field=type 'artist') (term field=type 'rundate')))"
  */
 export function processFilters(filters: Filter[]): string | undefined {
-  if (!filters || !filters?.length) return undefined
+  if (!filters || !filters.length) return undefined
 
   let fq: string[] = []
 
@@ -20,10 +20,10 @@ export function processFilters(filters: Filter[]): string | undefined {
       let value = filter[key]
 
       if (value !== undefined && value !== null) {
-        if (Array.isArray(value)) {
+        if (Array.isArray(value) && value.length > 0) {
           let orTerms = value.map((v) => `(term field=${key} '${v}')`)
           fq.push(`(or ${orTerms.join(' ')})`)
-        } else {
+        } else if (!Array.isArray(value)) {
           fq.push(`(term field=${key} '${value}')`)
         }
       }
