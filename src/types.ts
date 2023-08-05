@@ -16,7 +16,7 @@ export interface QueryTerm {
  * Filter used in the query. The key is the field name.
  */
 export interface Filter {
-  [key: string]: string | number | Array<string | number> | null
+  [key: string]: string | number | Array<string | number> | null | undefined
 }
 
 export interface PhraseOptions {

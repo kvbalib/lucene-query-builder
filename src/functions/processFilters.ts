@@ -10,8 +10,8 @@ import { Filter } from '../types'
  * const filterQuery = processFilters([{ type: ['artist', 'rundate'] }]);
  * // Returns: "(and (or (term field=type 'artist') (term field=type 'rundate')))"
  */
-export function processFilters(filters: Filter[]): string {
-  if (!filters || !filters?.length) return ''
+export function processFilters(filters: Filter[]): string | undefined {
+  if (!filters || !filters?.length) return undefined
 
   let fq: string[] = []
 
@@ -30,5 +30,5 @@ export function processFilters(filters: Filter[]): string {
     }
   }
 
-  return fq.length ? `(and ${fq.join(' ')})` : ''
+  return fq.length ? `(and ${fq.join(' ')})` : undefined
 }
