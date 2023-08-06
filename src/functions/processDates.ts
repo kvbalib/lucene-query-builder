@@ -48,6 +48,9 @@ export const processDates = (dates: DateParams, strict?: boolean): string => {
 
     if (Array.isArray(value)) {
       const [start, end] = value;
+
+      if (!start && !end) continue;
+
       const startString = start ? toISOString(start) : '*';
       const endString = end ? toISOString(end) : '*';
 
