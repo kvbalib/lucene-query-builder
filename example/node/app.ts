@@ -8,9 +8,6 @@ const PORT = 3000
 
 app.use(bodyParser.json())
 
-const s = '2023-08-10T22:00:00.000Z'
-const e = '2023-08-11T21:59:59.999Z'
-
 /**
  * Replace the following with your own CloudSearchDomainClient instance.
  * You can fill in credentials here, but preferred way to use AWS credentials is to
@@ -18,8 +15,12 @@ const e = '2023-08-11T21:59:59.999Z'
  * https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html
  */
 const client = new CloudSearchDomainClient({
-  region: 'eu-west-1',
-  endpoint: 'https://search-search-dev-v1-mdtxw6gkdof2viwee5762n2obq.eu-west-1.cloudsearch.amazonaws.com',
+  region: '<region>',
+  endpoint: '<endpoint>',
+  credentials: {
+    accessKeyId: '<accessKeyId>',
+    secretAccessKey: '<secretAccessKey>',
+  },
 })
 
 const luceneBuilder = new LuceneBuilder()
@@ -35,13 +36,7 @@ app.get('/search', async (req: express.Request, res: express.Response) => {
   const queryFilters = Object.entries(rest).map(([key, value]) => ({ [key]: String(value) }))
 
   const command = new SearchCommand({
-    query: luceneBuilder.query({
-      phrase: q,
-      and: [{ type: 'rundate' }],
-      dates: {
-        start_date: [s, e],
-        end_date: [s, e],
-      } }),
+    query: luceneBuilder.query({ phrase: q }),
     queryParser: 'lucene',
     return: '_all_fields',
     filterQuery: luceneBuilder.fq(queryFilters),
