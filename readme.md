@@ -2,6 +2,10 @@
 
 Lucene Query Builder is a utility for constructing query strings for Lucene. It provides a flexible way to build a query using an object-based approach. The library supports both function-based and class-based usage.
 
+### Compatibility
+
+The library is compiled to ECMAScript modules (ESM), ensuring easy integration with Webpack and front-end frameworks like React. Additionally, its compatibility extends to CommonJS, making it suitable for Node.js applications. This allows developers to utilize the library in various development environments.
+
 Tested with AWS CloudSearch.
 
 ## Installation
