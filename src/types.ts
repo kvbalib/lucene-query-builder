@@ -43,6 +43,8 @@ export interface PhraseOptions {
 export interface Options extends PhraseOptions {
   /** Indicates whether the resulting query should be URL-encoded */
   urlEncoded?: boolean
+  /** Indicates whether the resulting date query should be strict (bonded with 'AND') or not (bonded with 'OR'). */
+  strictDateRanges?: boolean
 }
 
 /**

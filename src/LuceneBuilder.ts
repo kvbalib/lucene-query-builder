@@ -19,6 +19,7 @@ export class LuceneBuilder {
       fuzzyLetters: defaultValues.fuzzyLetters,
       fuzzyLevel: defaultValues.fuzzyLevel,
       urlEncoded: false,
+      strictDateRanges: false
     }
 
     this.options = { ...defaultOptions, ...options }

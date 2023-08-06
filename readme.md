@@ -45,7 +45,7 @@ import { LuceneBuilder } from 'lucene-query-builder'
 const queryBuilder = new LuceneBuilder({ 
   fuzzyLetters: 5, 
   fuzzyLevel: 1, 
-  urlEncoded: true 
+  urlEncoded: true,
 })
 
 const myQuery = queryBuilder.query({
@@ -96,50 +96,54 @@ const command = new SearchCommand({
 const { hits, status } = await client.send(command)
 ```
 
-### Date Querying with the query method
-When constructing a query using the query method, you can now include date-based filtering with ease. The method provides a seamless integration for generating queries based on specific date fields or date ranges.
+### Date Querying with the `query` method
 
-`dates` Parameter:
+Lucene Query Builder has simplified the process of constructing date-based queries using the `query` method. This enhancement aids users to seamlessly generate queries based on specific date fields or ranges.
 
-The dates parameter allows you to pass date-based filters to the query. The input for this parameter should be an object where:
+#### `dates` Parameter:
 
-Each key represents a field name. The corresponding value can be:
+The `dates` parameter in the `query` method is designed to handle date-based filters. To utilize this functionality, you are expected to pass an object to the `dates` parameter:
 
-1. A Date object
-2. A valid ISO zulu date string
-3. An array/tuple with two items:
-First item as the start date (can be Date object or valid ISO zulu date string)
-Second item as the end date or null (can be Date object, valid ISO zulu date string, or null)
-If the provided string date is not in the zulu format, or it's not a valid ISO string, the query method will throw an error.
+- **Keys**: Every key in the object signifies the name of a date field.
+- **Values**: The corresponding value can be:
+    1. A JavaScript `Date` object.
+    2. A valid ISO zulu date string (e.g., `'2023-08-01T12:00:00Z'`).
+    3. A tuple (an array with two elements):
+        - First element is the start date which can be a `Date` object or a valid ISO zulu date string.
+        - Second element can be the end date (a `Date` object or a valid ISO zulu date string) or `null`.
+
+**Note**: It's imperative to ensure that the provided date string adheres to the zulu format. If it doesn't match this format or if it's not a valid ISO string, the `query` method will raise an exception.
+
+#### Examples:
 
 ```typescript
 import { query } from 'lucene-query-builder'
 
-// Query with a single date filter
+// Query with a singular date filter
 const myQuery1 = query({
   phrase: 'Hello world',
   dates: { startDate: '2023-08-01T12:00:00Z' }
 });
 
-// Query with a date range filter
+// Query filtering within a date range
 const myQuery2 = query({
   phrase: 'Hello world',
   dates: { startDate: ['2023-08-01T12:00:00Z', '2023-08-10T12:00:00Z'] }
 });
 
-// Query with a specific field's date filter
+// Query targeting a specific date field
 const myQuery3 = query({
   phrase: 'Hello world',
   dates: { customDateField: new Date('2023-08-01T12:00:00Z') }
 });
 
-// Query with a separate fields date range filter
+// Queries for separate date fields
 const myQuery4 = query({
   phrase: 'Hello world',
   dates: { start: '2023-08-01T12:00:00Z', end: '2023-08-10T12:00:00Z' }
 });
 
-// Query with a separate fields date range filter tuple
+// Query with multiple fields using tuple format for date ranges
 const myQuery5 = query({
   phrase: 'Hello world',
   dates: { start: ['2023-08-01T12:00:00Z', '2023-08-10T12:00:00Z'], end: [null, '2023-08-10T12:00:00Z'] }
@@ -158,11 +162,34 @@ const myQuery5 = query({
 
 ### Options
 
-| Option        | Default value | Description                                                                   |
-|---------------|---------------|-------------------------------------------------------------------------------|
-| `fuzzyLetters`| `5`           | The number of letters in the phrase to start fuzzy matching.                  |
-| `fuzzyLevel`  | `1`           | The level of fuzzy matching.                                                  |
-| `urlEncoded`  | `false`       | A boolean indicating whether the returned query string should be URL-encoded. |
+| Option           | Default value | Description                                                                                          |
+|------------------|---------------|------------------------------------------------------------------------------------------------------|
+| `fuzzyLetters`   | `5`           | The number of letters in the phrase to start fuzzy matching.                                         |
+| `fuzzyLevel`     | `1`           | The level of fuzzy matching.                                                                         |
+| `urlEncoded`     | `false`       | A boolean indicating whether the returned query string should be URL-encoded.                        |
+| `strictDateRanges`| `false`      | Indicates whether the resulting date query should be strict (bonded with 'AND') or not (bonded with 'OR'). |
+
+#### Option Details
+
+##### `strictDateRanges`
+
+When set to `true`, the date ranges within the query will be bonded together with an 'AND' clause, resulting in a stricter filtering process. This means the query will return only results that match all provided date filters.
+
+On the other hand, when set to `false` (default behavior), the date ranges will be bonded with an 'OR' clause. This offers a more lenient filtering process, returning results that match any of the provided date filters.
+
+##### Example Usage
+
+```typescript
+import { query } from 'lucene-query-builder'
+
+const myQuery = query({
+  phrase: 'Hello world',
+  dates: { start: '2023-08-01T12:00:00Z', end: '2023-08-10T12:00:00Z' },
+  options: {
+    strictDateRanges: true
+  }
+});
+```
 
 ## License
 MIT

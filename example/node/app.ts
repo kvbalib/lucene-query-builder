@@ -8,6 +8,9 @@ const PORT = 3000
 
 app.use(bodyParser.json())
 
+const s = '2023-08-10T22:00:00.000Z'
+const e = '2023-08-11T21:59:59.999Z'
+
 /**
  * Replace the following with your own CloudSearchDomainClient instance.
  * You can fill in credentials here, but preferred way to use AWS credentials is to
@@ -15,12 +18,8 @@ app.use(bodyParser.json())
  * https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html
  */
 const client = new CloudSearchDomainClient({
-  region: '<region>',
-  endpoint: '<endpoint>',
-  credentials: {
-    accessKeyId: '<accessKeyId>',
-    secretAccessKey: '<secretAccessKey>',
-  },
+  region: 'eu-west-1',
+  endpoint: 'https://search-search-dev-v1-mdtxw6gkdof2viwee5762n2obq.eu-west-1.cloudsearch.amazonaws.com',
 })
 
 const luceneBuilder = new LuceneBuilder()
@@ -36,7 +35,13 @@ app.get('/search', async (req: express.Request, res: express.Response) => {
   const queryFilters = Object.entries(rest).map(([key, value]) => ({ [key]: String(value) }))
 
   const command = new SearchCommand({
-    query: luceneBuilder.query({ phrase: q }),
+    query: luceneBuilder.query({
+      phrase: q,
+      and: [{ type: 'rundate' }],
+      dates: {
+        start_date: [s, e],
+        end_date: [s, e],
+      } }),
     queryParser: 'lucene',
     return: '_all_fields',
     filterQuery: luceneBuilder.fq(queryFilters),
@@ -49,22 +54,22 @@ app.get('/search', async (req: express.Request, res: express.Response) => {
 
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the Lucene Query Builder API!',
+    message: "Welcome to the Lucene Query Builder API!",
     usage: {
       search: {
-        description: 'Search using Lucene Query.',
-        endpoint: '/search',
-        method: 'GET',
+        description: "Search using Lucene Query.",
+        endpoint: "/search",
+        method: "GET",
         parameters: {
           q: "The query phrase. E.g., 'apple'",
-          otherParams: 'Additional query filters in key-value pairs. E.g., type=fruit',
+          otherParams: "Additional query filters in key-value pairs. E.g., type=fruit"
         },
-        example: 'GET /search?q=apple&type=fruit',
-      },
+        example: "GET /search?q=apple&type=fruit"
+      }
     },
-    note: 'This is a simple API. For full documentation, please refer to the repository README or the official documentation.',
-  })
-})
+    note: "This is a simple API. For full documentation, please refer to the repository README or the official documentation."
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)

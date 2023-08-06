@@ -1,4 +1,3 @@
-import { regExp } from '../constants/regExp'
 import { DateParams } from '../types'
 
 /**
@@ -10,12 +9,24 @@ import { DateParams } from '../types'
 const isValidISODate = (date: string): boolean => !isNaN(Date.parse(date))
 
 /**
- * Check if a string is a Zulu date format.
- *
- * @param {string} date - The string to check.
- * @returns {boolean} - Returns true if the date is in Zulu time, else false.
+ * Checks if the date is a valid ISO date format and converts Date objects to ISO strings.
+ * @param date
  */
-const isZuluDate = (date: string): boolean => regExp.dateZuluISO.test(date)
+const toISOString = (date: Date | string | null): string | null => {
+  if (date === null) return null
+  if (date instanceof Date) return date.toISOString()
+  if (isValidISODate(date)) {
+    if (!date.endsWith('Z')) {
+      console.warn(`Date is not in Zulu format: ${date}, consider using UTC date instead.`)
+    }
+
+    return date
+  } else {
+    console.error(`Date is not in ISO format: ${date}`)
+  }
+
+  return null
+}
 
 /**
  * Process an object containing dates and returns a Lucene query string.
@@ -24,50 +35,32 @@ const isZuluDate = (date: string): boolean => regExp.dateZuluISO.test(date)
  * It throws an error if the provided values are not in the expected format.
  *
  * @param {DateParams} dates - The object containing dates.
+ * @param strict - Indicates whether the resulting query should be strict (bonded with 'AND') or not (bonded with 'OR').
  * @returns {string} - Returns a Lucene query string.
  * @throws {Error} - Throws an error if the provided values are not in the expected format.
  */
-export const processDates = (dates: DateParams): string => {
-  if (Object.keys(dates).length > 2) {
-    console.warn('Too many properties in dates object. Only up to 2 properties are allowed.')
-  }
-
-  const queryParts: string[] = []
+export const processDates = (dates: DateParams, strict?: boolean): string => {
+  const queryParts: string[] = [];
+  const bond = strict ? ' AND ' : ' OR ';
 
   for (let key in dates) {
-    const value = dates[key]
+    const value = dates[key];
 
-    if (value instanceof Date) {
-      queryParts.push(`${key}:[${value.toISOString()} TO *]`)
-    } else if (typeof value === 'string') {
-      if (isValidISODate(value)) {
-        if (isZuluDate(value)) {
-          queryParts.push(`${key}:[${value} TO *]`)
-        } else {
-          throw new Error(
-            "Date is in ISO format but not in Zulu time (ends with 'Z'). Please convert it to Zulu time.",
-          )
-        }
-      } else {
-        throw new Error('Invalid date format. Please provide a valid ISO date string.')
+    if (Array.isArray(value)) {
+      const [start, end] = value;
+      const startString = start ? toISOString(start) : '*';
+      const endString = end ? toISOString(end) : '*';
+
+      queryParts.push(`${key}:[${startString} TO ${endString}]`);
+    } else {
+      const dateString = toISOString(value);
+
+      if (dateString) {
+        queryParts.push(`${key}:[${dateString} TO *]`);
       }
-    } else if (Array.isArray(value) && value.length === 2) {
-      const [start, end] = value
-
-      const startString =
-        start instanceof Date ? start.toISOString() : start ? (start as string) : '*'
-      const endString = end instanceof Date ? end.toISOString() : end ? (end as string) : '*'
-
-      if (start && (!isValidISODate(startString) || !isZuluDate(startString))) {
-        throw new Error("Start date is invalid or not in Zulu time (ends with 'Z').")
-      }
-      if (end && (!isValidISODate(endString) || !isZuluDate(endString))) {
-        throw new Error("End date is invalid or not in Zulu time (ends with 'Z').")
-      }
-
-      queryParts.push(`${key}:[${startString} TO ${endString}]`)
     }
   }
 
-  return queryParts.join(' OR ')
+  return queryParts.length ? `AND (${queryParts.join(bond)}) ` : '';
 }
+

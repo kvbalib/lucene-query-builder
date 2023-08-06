@@ -18,7 +18,7 @@ export const query = ({
   const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel })
   const andQuery = processTerms(and, 'AND')
   const notQuery = processTerms(not, 'NOT')
-  const dateQuery = dates ? processDates(dates) : ''
+  const dateQuery = dates ? processDates(dates, options?.strictDateRanges) : ''
 
   const result = [phraseQuery, andQuery, notQuery, dateQuery].filter(Boolean).join(' ')
   return urlEncoded ? encodeURIComponent(result) : result
