@@ -23,6 +23,6 @@ export const processPhrase = (
 
   return phrase
     .split(/\s+/)
-    .map((word) => `${word}~${fuzzyLevel}`)
+    .map((word) => `"${word}"~${fuzzyLevel}`)
     .join(' ')
 }

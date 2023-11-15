@@ -15,12 +15,9 @@ app.use(bodyParser.json())
  * https://docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/setting-credentials-node.html
  */
 const client = new CloudSearchDomainClient({
-  region: '<region>',
-  endpoint: '<endpoint>',
-  credentials: {
-    accessKeyId: '<accessKeyId>',
-    secretAccessKey: '<secretAccessKey>',
-  },
+  region: 'eu-west-1',
+  endpoint: 'https://search-search-dev-v1-mdtxw6gkdof2viwee5762n2obq.eu-west-1.cloudsearch.amazonaws.com',
+
 })
 
 const luceneBuilder = new LuceneBuilder()
@@ -39,7 +36,7 @@ app.get('/search', async (req: express.Request, res: express.Response) => {
     query: luceneBuilder.query({ phrase: q }),
     queryParser: 'lucene',
     return: '_all_fields',
-    filterQuery: luceneBuilder.fq(queryFilters),
+    filterQuery: luceneBuilder.fq([{ 'type': ['rundate', 'activity'] }]),
   })
 
   const { hits } = await client.send(command)
