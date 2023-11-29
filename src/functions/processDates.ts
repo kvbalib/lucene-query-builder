@@ -40,30 +40,29 @@ const toISOString = (date: Date | string | null): string | null => {
  * @throws {Error} - Throws an error if the provided values are not in the expected format.
  */
 export const processDates = (dates: DateParams, strict?: boolean): string => {
-  const queryParts: string[] = [];
-  const bond = strict ? ' AND ' : ' OR ';
+  const queryParts: string[] = []
+  const bond = strict ? ' AND ' : ' OR '
 
   for (let key in dates) {
-    const value = dates[key];
+    const value = dates[key]
 
     if (Array.isArray(value)) {
-      const [start, end] = value;
+      const [start, end] = value
 
-      if (!start && !end) continue;
+      if (!start && !end) continue
 
-      const startString = start ? toISOString(start) : '*';
-      const endString = end ? toISOString(end) : '*';
+      const startString = start ? toISOString(start) : '*'
+      const endString = end ? toISOString(end) : '*'
 
-      queryParts.push(`${key}:[${startString} TO ${endString}]`);
+      queryParts.push(`${key}:[${startString} TO ${endString}]`)
     } else {
-      const dateString = toISOString(value);
+      const dateString = toISOString(value)
 
       if (dateString) {
-        queryParts.push(`${key}:[${dateString} TO *]`);
+        queryParts.push(`${key}:[${dateString} TO *]`)
       }
     }
   }
 
-  return queryParts.length ? `AND (${queryParts.join(bond)}) ` : '';
+  return queryParts.length ? `AND (${queryParts.join(bond)}) ` : ''
 }
-

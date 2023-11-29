@@ -168,10 +168,11 @@ const myQuery5 = query({
 
 | Option           | Default value | Description                                                                                          |
 |------------------|---------------|------------------------------------------------------------------------------------------------------|
-| `fuzzyLetters`   | `5`           | The number of letters in the phrase to start fuzzy matching.                                         |
+| `fuzzyLetters`   | `3`           | The number of letters in the phrase to start fuzzy matching.                                         |
 | `fuzzyLevel`     | `1`           | The level of fuzzy matching.                                                                         |
+| `proximity`      | `1`           | The number of words allowed between words in the phrase.                                             |
 | `urlEncoded`     | `false`       | A boolean indicating whether the returned query string should be URL-encoded.                        |
-| `strictDateRanges`| `false`      | Indicates whether the resulting date query should be strict (bonded with 'AND') or not (bonded with 'OR'). |
+| `strictDateRanges`| `false`       | Indicates whether the resulting date query should be strict (bonded with 'AND') or not (bonded with 'OR'). |
 
 #### Option Details
 

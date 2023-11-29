@@ -1,4 +1,5 @@
 export const defaultValues = {
-  fuzzyLetters: 5,
+  fuzzyLetters: 3,
   fuzzyLevel: 1,
+  proximity: 1,
 }

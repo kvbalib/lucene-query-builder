@@ -30,10 +30,12 @@ export interface DateParams {
 }
 
 export interface PhraseOptions {
-  /** Number of letters in phrase to start fuzzy matching. */
+  /** Number of letters in a word to start fuzzy matching. */
   fuzzyLetters?: number
   /** Fuzzy matching level. */
   fuzzyLevel?: number
+  /** Proximity distance. */
+  proximity?: number
 }
 
 /**

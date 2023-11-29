@@ -13,16 +13,23 @@ export const processPhrase = (
   {
     fuzzyLetters = defaultValues.fuzzyLetters,
     fuzzyLevel = defaultValues.fuzzyLevel,
+    proximity = defaultValues.proximity,
   }: PhraseOptions = {},
 ): string => {
   if (!phrase) return '*:*'
 
   phrase = phrase.trim()
+  let words = phrase.split(/\s+/)
 
-  if (phrase.length < fuzzyLetters) return phrase
+  // Single word - apply fuzzy search or append wildcard
+  if (words.length === 1) {
+    return words[0].length >= fuzzyLetters ? `${words[0]}~${fuzzyLevel}` : `${words[0]}*`
+  }
 
-  return phrase
-    .split(/\s+/)
-    .map((word) => `"${word}"~${fuzzyLevel}`)
-    .join(' ')
+  // Multiple words - apply fuzzy and proximity search
+  words = words.map((word) => {
+    return word.length >= fuzzyLetters ? `${word}~${fuzzyLevel}` : word
+  })
+
+  return `"${words.join(' ')}"~${proximity}`
 }
