@@ -13,9 +13,9 @@ export const query = ({
   dates,
   options = {},
 }: Partial<Query> = {}) => {
-  const { fuzzyLetters, fuzzyLevel, urlEncoded } = options
+  const { fuzzyLetters, fuzzyLevel, urlEncoded, proximity } = options
 
-  const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel })
+  const phraseQuery = processPhrase(phrase, { fuzzyLetters, fuzzyLevel, proximity })
   const andQuery = processTerms(and, 'AND')
   const notQuery = processTerms(not, 'NOT')
   const dateQuery = dates ? processDates(dates, options?.strictDateRanges) : ''

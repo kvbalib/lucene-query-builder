@@ -18,15 +18,8 @@ export const processPhrase = (
 ): string => {
   if (!phrase) return '*:*'
 
-  phrase = phrase.trim()
-  let words = phrase.split(/\s+/)
-
-  // Single word - apply fuzzy search or append wildcard
-  if (words.length === 1) return `"${words[0]}"*`
-
-  // Multiple words - apply fuzzy and proximity search
-  words = words.map((word) => {
-    return word.length >= fuzzyLetters ? `${word}~${fuzzyLevel}` : word
+  const words = phrase.trim().split(/\s+/).map((word, index) => {
+    return word.length >= fuzzyLetters ? `${word}~` : word
   })
 
   return `"${words.join(' ')}"~${proximity}`
