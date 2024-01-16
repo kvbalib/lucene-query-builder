@@ -22,5 +22,5 @@ export const processPhrase = (
     return word.length >= fuzzyLetters ? `${word}~` : word
   })
 
-  return `"${words.join(' ')}"~${proximity}`
+  return `${words.join('+')}`
 }
